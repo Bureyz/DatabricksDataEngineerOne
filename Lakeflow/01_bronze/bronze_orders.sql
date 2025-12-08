@@ -1,4 +1,4 @@
---SET order_path = '/Volumes/training_catalog/default/kion_datasets/orders';
+--SET order_path = '/Volumes/training_catalog/default/datasets/orders';
 
 -- 1. RAW ORDERS (BRONZE) – docelowa streaming table
 CREATE OR REFRESH STREAMING TABLE bronze_orders;
