@@ -1,14 +1,16 @@
--- ============================================================
+
 -- Silver Layer: Cleaning and SCD (Slowly Changing Dimensions)
 -- Lakeflow SDP Syntax with AUTO CDC
--- ============================================================
+
 
 -- 1. Customers: SCD Type 2 (History Tracking)
 CREATE OR REFRESH STREAMING TABLE silver_customers
 COMMENT 'Cleaned customers with SCD Type 2';
 
+CREATE FLOW silver_customer_flow
+AS
 AUTO CDC INTO silver_customers
-FROM bronze_customers
+FROM STREAM(bronze_customers)
 KEYS (CustomerID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 2;
@@ -17,8 +19,10 @@ STORED AS SCD TYPE 2;
 CREATE OR REFRESH STREAMING TABLE silver_products
 COMMENT 'Cleaned products with SCD Type 1';
 
+CREATE FLOW silver_products_flow
+AS
 AUTO CDC INTO silver_products
-FROM bronze_products
+FROM STREAM(bronze_products)
 KEYS (ProductID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 1;
@@ -27,8 +31,11 @@ STORED AS SCD TYPE 1;
 CREATE OR REFRESH STREAMING TABLE silver_product_categories
 COMMENT 'Cleaned product categories with SCD Type 1';
 
+
+CREATE FLOW silver_products_cat_flow
+AS
 AUTO CDC INTO silver_product_categories
-FROM bronze_product_categories
+FROM STREAM(bronze_product_categories)
 KEYS (ProductCategoryID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 1;
