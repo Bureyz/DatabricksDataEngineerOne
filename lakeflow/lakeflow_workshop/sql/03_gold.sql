@@ -1,20 +1,62 @@
 -- ============================================================
--- Gold Layer: Business Aggregates
+-- Gold Layer: Star Schema
 -- Lakeflow SDP Syntax with Materialized Views
 -- ============================================================
 
--- Customer Sales Summary
-CREATE OR REFRESH MATERIALIZED VIEW gold_customer_sales
-COMMENT 'Aggregated sales by customer'
+-- 1. Dimension: Customers
+CREATE OR REFRESH MATERIALIZED VIEW dim_customer
+COMMENT 'Customer Dimension (Current State)'
 AS SELECT 
-  c.CustomerID,
-  c.FirstName,
-  c.LastName,
-  c.CompanyName,
-  count(o.SalesOrderID) as total_orders,
-  sum(o.TotalDue) as total_spent,
-  max(o.OrderDate) as last_order_date
-FROM silver_orders o
-JOIN silver_customers c ON o.CustomerID = c.CustomerID
-WHERE c.__END_AT IS NULL -- Only current customer details (SCD Type 2)
-GROUP BY c.CustomerID, c.FirstName, c.LastName, c.CompanyName;
+  CustomerID,
+  FirstName,
+  LastName,
+  CompanyName,
+  EmailAddress,
+  Phone
+FROM silver_customers
+WHERE __END_AT IS NULL;
+
+-- 2. Dimension: Products
+CREATE OR REFRESH MATERIALIZED VIEW dim_product
+COMMENT 'Product Dimension enriched with Category'
+AS SELECT 
+  p.ProductID,
+  p.Name as ProductName,
+  p.ProductNumber,
+  p.Color,
+  p.StandardCost,
+  p.ListPrice,
+  pc.Name as CategoryName
+FROM silver_products p
+LEFT JOIN silver_product_categories pc ON p.ProductCategoryID = pc.ProductCategoryID;
+
+-- 3. Dimension: Date
+CREATE OR REFRESH MATERIALIZED VIEW dim_date
+COMMENT 'Date Dimension generated from Order Dates'
+AS SELECT DISTINCT
+  cast(OrderDate as date) as DateKey,
+  year(OrderDate) as Year,
+  month(OrderDate) as Month,
+  day(OrderDate) as Day,
+  quarter(OrderDate) as Quarter,
+  dayofweek(OrderDate) as DayOfWeek,
+  date_format(OrderDate, 'MMMM') as MonthName,
+  date_format(OrderDate, 'EEEE') as DayName
+FROM silver_orders;
+
+-- 4. Fact: Sales
+CREATE OR REFRESH MATERIALIZED VIEW fact_sales
+COMMENT 'Sales Fact Table'
+AS SELECT 
+  od.SalesOrderID,
+  od.SalesOrderDetailID,
+  oh.OrderDate,
+  oh.CustomerID,
+  od.ProductID,
+  od.OrderQty,
+  od.UnitPrice,
+  od.UnitPriceDiscount,
+  od.LineTotal,
+  oh.Status
+FROM silver_order_details od
+JOIN silver_orders oh ON od.SalesOrderID = oh.SalesOrderID;

@@ -23,7 +23,17 @@ KEYS (ProductID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 1;
 
--- 3. Orders: Streaming Table with Data Quality Expectations
+-- 3. Product Categories: SCD Type 1 (Overwrite)
+CREATE OR REFRESH STREAMING TABLE silver_product_categories
+COMMENT 'Cleaned product categories with SCD Type 1';
+
+AUTO CDC INTO silver_product_categories
+FROM bronze_product_categories
+KEYS (ProductCategoryID)
+SEQUENCE BY ModifiedDate
+STORED AS SCD TYPE 1;
+
+-- 4. Orders Header: Streaming Table with Data Quality Expectations
 CREATE OR REFRESH STREAMING TABLE silver_orders
 (
   CONSTRAINT valid_amount EXPECT (TotalDue > 0) ON VIOLATION DROP ROW,
@@ -37,4 +47,19 @@ AS SELECT
   OrderDate,
   Status,
   current_timestamp() as processed_at
-FROM STREAM(bronze_orders);
+FROM STREAM(bronze_orders_header);
+
+-- 5. Orders Detail: Streaming Table
+CREATE OR REFRESH STREAMING TABLE silver_order_details
+COMMENT 'Cleaned order details'
+AS SELECT 
+  SalesOrderID,
+  SalesOrderDetailID,
+  OrderQty,
+  ProductID,
+  UnitPrice,
+  UnitPriceDiscount,
+  LineTotal,
+  ModifiedDate,
+  current_timestamp() as processed_at
+FROM STREAM(bronze_orders_detail);
