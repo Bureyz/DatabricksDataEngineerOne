@@ -27,7 +27,7 @@ def bronze_customers_flow():
         .option("cloudFiles.format", "csv")
         .option("header", "true")
         .option("inferSchema", "true")
-        .load(f"{source_path}/Customers")
+        .load(f"{source_path}/Customers.csv")
     )
 
 # Bronze Products
@@ -43,7 +43,7 @@ def bronze_products_flow():
         .option("cloudFiles.format", "csv")
         .option("header", "true")
         .option("inferSchema", "true")
-        .load(f"{source_path}/Product")
+        .load(f"{source_path}/Product.csv")
     )
 
 # Bronze Product Categories
@@ -59,7 +59,7 @@ def bronze_product_categories_flow():
         .option("cloudFiles.format", "csv")
         .option("header", "true")
         .option("inferSchema", "true")
-        .load(f"{source_path}/ProductCategory")
+        .load(f"{source_path}/ProductCategory.csv")
     )
 
 # Bronze Orders Header
@@ -75,7 +75,7 @@ def bronze_orders_header_flow():
         .option("cloudFiles.format", "csv")
         .option("header", "true")
         .option("inferSchema", "true")
-        .load(f"{source_path}/SalesOrderHeader")
+        .load(f"{source_path}/SalesOrderHeader.csv")
     )
 
 # Bronze Orders Details
@@ -91,7 +91,7 @@ def bronze_orders_detail_flow():
         .option("cloudFiles.format", "csv")
         .option("header", "true")
         .option("inferSchema", "true")
-        .load(f"{source_path}/SalesOrderDetail")
+        .load(f"{source_path}/SalesOrderDetail.csv")
     )
 
 # ============================================================
