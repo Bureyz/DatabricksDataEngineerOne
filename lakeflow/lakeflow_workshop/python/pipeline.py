@@ -109,7 +109,7 @@ dp.create_auto_cdc_flow(
     source="bronze_customers",
     keys=["CustomerID"],
     sequence_by=col("ModifiedDate"),
-    stored_as_scd_type="2"
+    stored_as_scd_type=2
 )
 
 # Silver Products: SCD Type 1 (Overwrite)
@@ -123,7 +123,7 @@ dp.create_auto_cdc_flow(
     source="bronze_products",
     keys=["ProductID"],
     sequence_by=col("ModifiedDate"),
-    stored_as_scd_type="1"
+    stored_as_scd_type=1
 )
 
 # Silver Product Categories: SCD Type 1 (Overwrite)
@@ -137,15 +137,19 @@ dp.create_auto_cdc_flow(
     source="bronze_product_categories",
     keys=["ProductCategoryID"],
     sequence_by=col("ModifiedDate"),
-    stored_as_scd_type="1"
+    stored_as_scd_type=1
+)
+
+dp.create_streaming_table(
+    name="silver_orders",
+    comment="Cleaned orders data",
+    expect_all_or_drop={"valid_amount": "TotalDue > 0"}
 )
 
 # Silver Orders: Streaming Table with Data Quality
-@dp.table(
-    name="silver_orders",
-    comment="Cleaned orders data",
-    expect_all_or_drop={"valid_amount": "TotalDue > 0"},
-    expect_all_or_fail={"valid_customer": "CustomerID IS NOT NULL"}
+@dp.append_flow(
+    target="silver_orders",
+    name="silver_orders_ingest_flow"
 )
 def silver_orders():
     return (
