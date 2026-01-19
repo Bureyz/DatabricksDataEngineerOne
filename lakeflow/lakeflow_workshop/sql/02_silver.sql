@@ -4,38 +4,28 @@
 
 
 -- 1. Customers: SCD Type 2 (History Tracking)
-CREATE OR REFRESH STREAMING TABLE silver_customers
-COMMENT 'Cleaned customers with SCD Type 2';
+CREATE OR REFRESH STREAMING TABLE silver_customers;
 
-CREATE FLOW silver_customer_flow
-AS
-AUTO CDC INTO silver_customers
-FROM STREAM(bronze_customers)
+APPLY CHANGES INTO LIVE.silver_customers
+FROM STREAM(LIVE.bronze_customers)
 KEYS (CustomerID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 2;
 
 -- 2. Products: SCD Type 1 (Overwrite)
-CREATE OR REFRESH STREAMING TABLE silver_products
-COMMENT 'Cleaned products with SCD Type 1';
+CREATE OR REFRESH STREAMING TABLE silver_products;
 
-CREATE FLOW silver_products_flow
-AS
-AUTO CDC INTO silver_products
-FROM STREAM(bronze_products)
+APPLY CHANGES INTO LIVE.silver_products
+FROM STREAM(LIVE.bronze_products)
 KEYS (ProductID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 1;
 
 -- 3. Product Categories: SCD Type 1 (Overwrite)
-CREATE OR REFRESH STREAMING TABLE silver_product_categories
-COMMENT 'Cleaned product categories with SCD Type 1';
+CREATE OR REFRESH STREAMING TABLE silver_product_categories;
 
-
-CREATE FLOW silver_products_cat_flow
-AS
-AUTO CDC INTO silver_product_categories
-FROM STREAM(bronze_product_categories)
+APPLY CHANGES INTO LIVE.silver_product_categories
+FROM STREAM(LIVE.bronze_product_categories)
 KEYS (ProductCategoryID)
 SEQUENCE BY ModifiedDate
 STORED AS SCD TYPE 1;
@@ -54,7 +44,7 @@ AS SELECT
   OrderDate,
   Status,
   current_timestamp() as processed_at
-FROM STREAM(bronze_orders_header);
+FROM STREAM(LIVE.bronze_orders_header);
 
 -- 5. Orders Detail: Streaming Table
 CREATE OR REFRESH STREAMING TABLE silver_order_details
@@ -69,4 +59,4 @@ AS SELECT
   LineTotal,
   ModifiedDate,
   current_timestamp() as processed_at
-FROM STREAM(bronze_orders_detail);
+FROM STREAM(LIVE.bronze_orders_detail);
