@@ -1,60 +1,60 @@
 # Data Engineer OneDay - Databricks Training
 
-## O Repozytorium
+## About This Repository
 
-To repozytorium zawiera materiały szkoleniowe, kody źródłowe oraz ćwiczenia do szkolenia "Data Engineer OneDay" prowadzonego przez Altkom Akademia. Materiały są zaprojektowane tak, aby przeprowadzić uczestników przez kluczowe aspekty pracy inżyniera danych na platformie Databricks Lakehouse.
+This repository contains training materials, source code, and exercises for the "Data Engineer OneDay" training course provided by Altkom Akademia. The materials are designed to guide participants through key aspects of data engineering on the Databricks Lakehouse Platform.
 
-## Zakres Szkolenia (Agenda)
+## Course Agenda
 
-Program szkolenia obejmuje pełny cykl życia inżynierii danych, od wprowadzenia do platformy po orkiestrację i governance.
+The training program covers the full data engineering lifecycle, from platform introduction to orchestration and governance.
 
-### Moduły Demonstracyjne (`notebooks/demo/`)
+### Demo Modules (`notebooks/demo/`)
 
-1.  **01_platform_intro** - Wprowadzenie do platformy Databricks, interfejsu i podstawowych pojęć (Workspace, Compute).
-2.  **02_ingestion_transformations** - Pobieranie danych (Ingestion) z różnych źródeł oraz transformacje przy użyciu PySpark i SQL.
-3.  **03_delta_lake_optimization** - Praca z formatem Delta Lake, operacje ACID, Time Travel oraz techniki optymalizacji (Z-Order, Optimize).
-4.  **04_streaming_incremental** - Przetwarzanie strumieniowe (Structured Streaming) i przyrostowe ładowanie danych (Auto Loader).
-5.  **05_medallion_lakeflow** - Architektura Medallion (Bronze/Silver/Gold) oraz budowa potoków danych w Lakeflow (Delta Live Tables).
-6.  **06_orchestration** - Orkiestracja zadań przy użyciu Databricks Workflows (Jobs).
-7.  **07_governance** - Zarządzanie danymi i bezpieczeństwo z Unity Catalog.
+1.  **01_platform_intro** - Introduction to the Databricks platform, interface, and basic concepts (Workspace, Compute).
+2.  **02_ingestion_transformations** - Data Ingestion from various sources and transformations using PySpark and SQL.
+3.  **03_delta_lake_optimization** - Working with Delta Lake format, ACID operations, Time Travel, and optimization techniques (Z-Order, Optimize).
+4.  **04_streaming_incremental** - Stream processing (Structured Streaming) and incremental data loading (Auto Loader).
+5.  **05_medallion_lakeflow** - Medallion Architecture (Bronze/Silver/Gold) and building data pipelines in Lakeflow (Delta Live Tables).
+6.  **06_orchestration** - Task orchestration using Databricks Workflows (Jobs).
+7.  **07_governance** - Data management and security with Unity Catalog.
 
-### Warsztaty (`notebooks/workshops/`)
+### Workshops (`notebooks/workshops/`)
 
-Praktyczne ćwiczenia do samodzielnego wykonania przez uczestników:
+Practical exercises for participants to complete independently:
 
-*   **W1_ingestion_transformations** - Warsztat z ingestionu i transformacji danych.
-*   **W2_delta_optimization** - Ćwiczenia z optymalizacji tabel Delta.
-*   **W3_lakeflow_pipeline** - Budowa kompletnego potoku ETL w architekturze Medallion.
-*   **W4_governance_security** - Konfiguracja uprawnień i governance.
+*   **W1_ingestion_transformations** - Workshop on data ingestion and transformation.
+*   **W2_delta_optimization** - Exercises on Delta table optimization.
+*   **W3_lakeflow_pipeline** - Building a complete ETL pipeline in Medallion architecture.
+*   **W4_governance_security** - Configuring permissions and governance.
 
-## Struktura Repozytorium
+## Repository Structure
 
 ```text
 .
-├── assets/                 # Zasoby graficzne i pomocnicze
-├── dataset/                # Przykładowe zbiory danych (CSV, JSON)
-├── lakeflow/               # Definicje i skrypty dla Delta Live Tables (DLT)
+├── assets/                 # Graphical assets and helper files
+├── dataset/                # Sample datasets (CSV, JSON)
+├── lakeflow/               # Definitions and scripts for Delta Live Tables (DLT)
 │   ├── lakeflow_trn_pipeline/
 │   └── lakeflow_workshop/
-├── notebooks/              # Notebooki Jupyter/Databricks
-│   ├── demo/               # Notebooki pokazowe (instruktorskie)
-│   └── workshops/          # Notebooki warsztatowe (dla kursantów)
-└── README.md               # Dokumentacja repozytorium
+├── notebooks/              # Jupyter/Databricks Notebooks
+│   ├── demo/               # Demo notebooks (instructor-led)
+│   └── workshops/          # Workshop notebooks (for students)
+└── README.md               # Repository documentation
 ```
 
-## Wymagania Wstępne
+## Prerequisites
 
-*   Podstawowa znajomość języka SQL oraz Python.
-*   Dostęp do platformy Databricks (Azure Databricks, AWS Databricks lub GCP).
-*   Podstawowe zrozumienie koncepcji chmurowych i bazodanowych.
+*   Basic knowledge of SQL and Python.
+*   Access to Databricks platform (Azure Databricks, AWS Databricks, or GCP).
+*   Basic understanding of cloud and database concepts.
 
-## Jak korzystać?
+## How to Use
 
-1.  Sklonuj repozytorium do swojego obszaru roboczego w Databricks (Databricks Repos).
-2.  Upewnij się, że klaster obliczeniowy (All-Purpose Compute) jest uruchomiony.
-3.  Wykonaj skrypty konfiguracyjne (jeśli są dostępne, np. `00_setup.ipynb`), aby przygotować środowisko (katalogi, bazy danych).
-4.  Przechodź kolejno przez notebooki z folderu `demo`.
-5.  Wykonuj zadania z folderu `workshops` zgodnie z instrukcjami trenera.
+1.  Clone the repository to your Databricks Workspace (Databricks Repos).
+2.  Ensure that a compute cluster (All-Purpose Compute) is running.
+3.  Run configuration scripts (if available, e.g., `00_setup.ipynb`) to prepare the environment (catalogs, databases).
+4.  Go through the notebooks in the `demo` folder sequentially.
+5.  Complete the tasks in the `workshops` folder as instructed by the trainer.
 
 ---
-*Materiały szkoleniowe Altkom Akademia*
+*Altkom Akademia Training Materials*
